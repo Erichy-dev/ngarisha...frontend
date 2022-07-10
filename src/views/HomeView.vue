@@ -1,0 +1,21 @@
+<script lang="ts" setup>
+import HomeProductsVue from "@/components/HomeProducts.vue";
+import DescribeProductsVue from "@/components/DescribeProducts.vue";
+
+function addCart(val: string) {
+  selectedProduct.value = val;
+}
+</script>
+<script lang="ts">
+import { ref } from "vue";
+import type { Ref } from "vue";
+const selectedProduct: Ref<string | null> = ref(null);
+</script>
+
+<!-- blue, purple & white -->
+<template>
+  <main class="flex flex-col flex-1">
+    <describe-products-vue :selected-product="selectedProduct" />
+    <home-products-vue @add-cart="addCart" />
+  </main>
+</template>
