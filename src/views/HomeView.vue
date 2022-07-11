@@ -5,9 +5,13 @@ import DescribeProductsVue from "@/components/DescribeProducts.vue";
 function addCart(val: string) {
   selectedProduct.value = val;
 }
+onUnmounted(() => {
+  selectedProduct.value = null;
+})
 </script>
+
 <script lang="ts">
-import { ref } from "vue";
+import { onUnmounted, ref } from "vue";
 import type { Ref } from "vue";
 const selectedProduct: Ref<string | null> = ref(null);
 </script>

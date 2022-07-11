@@ -6,7 +6,6 @@ import type { LocationQueryValue } from "vue-router";
 
 const cartSelectedProducts: Ref<LocationQueryValue[] | LocationQueryValue> =
   ref(useRoute().query.selected);
-
 function undoProduct(event: Event) {
   const productId: string = (event.target as HTMLElement).id;
   const productIndex: number | undefined =
@@ -16,6 +15,10 @@ function undoProduct(event: Event) {
     1
   );
 }
+// query
+// const props = defineProps<{
+//   query: string[];
+// }>()
 </script>
 
 <template>

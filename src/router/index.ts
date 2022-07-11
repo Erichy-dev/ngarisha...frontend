@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import ConfirmSelectionView from "../views/ConfirmSelectionView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,7 @@ const router = createRouter({
       path: "/confirmselection",
       name: "confirmselection",
       component: () => import("../views/ConfirmSelectionView.vue"),
+      props: (route) => ({ query: route.query.selected }),
     },
     {
       path: "/approve",

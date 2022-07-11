@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/solid";
-import type { Ref } from "vue";
-import { ref } from "vue";
+import { ref, type Ref } from "vue";
 
 function moveProductRight() {
   if (num1.value <= numberOfProducts.value + 2) {
