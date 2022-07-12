@@ -12,7 +12,7 @@
     >
       <label for="customerName" class="self-center">Name</label>
       <input
-        class="flex-1 self-center"
+        class="flex-1"
         id="customerName"
         type="text"
         placeholder="Riki Trump"

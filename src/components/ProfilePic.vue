@@ -1,7 +1,9 @@
 <script lang="ts" setup></script>
 
 <template>
-  <main class="h-20 w-16 md:h-40 md:w-40 absolute left-1 md:left-3 top-3">
+  <main
+    class="h-20 w-16 md:h-40 md:w-40 absolute left-1 md:left-3 top-3 bottom-5"
+  >
     <img
       class="h-16 w-16 md:h-40 md:w-40 rounded-full hover:animate-pulse"
       src="@/assets/1.png"

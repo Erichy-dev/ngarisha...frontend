@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { ShoppingCartIcon } from "@heroicons/vue/solid";
-import { ref, computed, watchEffect, onUnmounted, onMounted, toRef } from "vue";
 import { RouterLink } from "vue-router";
 import type { Ref } from "vue";
 
@@ -22,11 +21,12 @@ watchEffect(() => {
   if (customer_detergents.value > 0) showCart.value = true;
 });
 // onMounted(() => {
-//   cartSelectedProducts.value.splice(0, cartSelectedProducts.value.length)
+  //   cartSelectedProducts.value.splice(0, cartSelectedProducts.value.length)
 //   console.log(cartSelectedProducts.value.length)
 // })
 </script>
 <script lang="ts">
+import { ref, watchEffect, toRef } from "vue";
 const showCart: Ref<boolean> = ref(false);
 </script>
 
