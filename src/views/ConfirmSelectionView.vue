@@ -1,24 +1,38 @@
-<script lang="ts" setup>
-import { RouterLink, useRoute } from "vue-router";
-import { ref } from "vue";
-import type { Ref } from "vue";
+<script lang="ts" setup></script>
+<script lang="ts">
+//shifted to options API to maximise on vue-router. composition API doesn't fully support vue-router.
 import type { LocationQueryValue } from "vue-router";
 
-const cartSelectedProducts: Ref<LocationQueryValue[] | LocationQueryValue> =
-  ref(useRoute().query.selected);
-function undoProduct(event: Event) {
-  const productId: string = (event.target as HTMLElement).id;
-  const productIndex: number | undefined =
-    cartSelectedProducts.value?.indexOf(productId);
-  (cartSelectedProducts.value as LocationQueryValue[])?.splice(
-    productIndex as number,
-    1
-  );
-}
-// query
-// const props = defineProps<{
-//   query: string[];
-// }>()
+export default {
+  data() {
+    return {
+      cartSelectedProducts: this.$route.query.selected,
+      confirmSelect: true,
+    };
+  },
+  methods: {
+    toPurchase() {
+      this.$router.push({ path: "/purchase" });
+    },
+    undoProduct(event: Event) {
+      const productId: string = (event.target as HTMLElement).id;
+      const productIndex: number | undefined = (
+        this.cartSelectedProducts as LocationQueryValue[]
+      ).indexOf(productId);
+      (this.cartSelectedProducts as LocationQueryValue[])?.splice(
+        productIndex as number,
+        1
+      );
+    },
+  },
+  created() {
+    if (typeof this.cartSelectedProducts === typeof "") {
+      this.cartSelectedProducts = [
+        this.cartSelectedProducts as LocationQueryValue,
+      ];
+    }
+  },
+};
 </script>
 
 <template>
@@ -30,7 +44,7 @@ function undoProduct(event: Event) {
       <h2 class="font-bold">
         Confirm your selections then fill the delivery form.
       </h2>
-      <div class="flex flex-col">
+      <div class="flex flex-col" v-if="confirmSelect">
         <transition-group name="selected">
           <div
             v-for="product of cartSelectedProducts"
@@ -45,7 +59,7 @@ function undoProduct(event: Event) {
             <button
               @click="undoProduct($event)"
               :id="String(product)"
-              class="font-bold text-purple-600 hover:text-cyan-900 hover:animate-pulse font-serif bg-slate-200 rounded-md p-1 m-1 md:m-4"
+              class="font-bold text-purple-600 hover:text-cyan-900 hover:animate-pulse font-serif bg-slate-200 rounded-md p-1 m-1 md:m-4 undoButton"
             >
               UNDO
             </button>
@@ -57,13 +71,12 @@ function undoProduct(event: Event) {
           >
             CONFIRM<!--talk to db-->
           </button>
-          <router-link
-            to="/purchase"
-            class="font-bold hover:text-red-900 hover:animate-pulse font-serif text-sm md:text-xl flex-1"
-            ><button class="bg-purple-500 rounded-full p-1">
-              DELIVERY FORM
-            </button></router-link
+          <button
+            @click="toPurchase"
+            class="bg-purple-500 rounded-full p-1 font-bold hover:text-red-900 hover:animate-pulse font-serif text-sm md:text-xl deliveryPush"
           >
+            DELIVERY FORM
+          </button>
         </div>
       </div>
     </section>

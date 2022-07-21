@@ -4,7 +4,7 @@ import ProfilePicVue from "./ProfilePic.vue";
 </script>
 
 <template>
-  <main class="flex flex-col flex-1">
+  <main class="flex flex-col flex-1 h-1/4">
     <profile-pic-vue />
     <h1
       class="text-purple-900 self-center ml-20 lg:ml-0 mt-2 md:mt-14 border-b border-white pb-4"

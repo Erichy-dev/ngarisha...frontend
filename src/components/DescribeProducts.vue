@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { ShoppingCartIcon } from "@heroicons/vue/solid";
-import { RouterLink } from "vue-router";
 import type { Ref } from "vue";
+import { RouterLink } from "vue-router";
 
+// useRouter().
 const customer_detergents: Ref<number> = ref(0);
 const props = defineProps<{
   selectedProduct: string | null;
@@ -19,11 +20,8 @@ watchEffect(() => {
   customer_detergents.value = cartSelectedProducts.value.length;
   //toggle cart
   if (customer_detergents.value > 0) showCart.value = true;
+  else showCart.value = false;
 });
-// onMounted(() => {
-  //   cartSelectedProducts.value.splice(0, cartSelectedProducts.value.length)
-//   console.log(cartSelectedProducts.value.length)
-// })
 </script>
 <script lang="ts">
 import { ref, watchEffect, toRef } from "vue";
@@ -50,7 +48,7 @@ const showCart: Ref<boolean> = ref(false);
       </li>
     </ul>
     <transition name="cart" :duration="2000">
-      <div class="flex flex-col" v-if="showCart">
+      <div class="flex flex-col" v-if="showCart" id="cart">
         <router-link
           :to="{
             name: 'confirmselection',

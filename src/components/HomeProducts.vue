@@ -1,51 +1,7 @@
 <script lang="ts" setup>
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/solid";
-import { ref, type Ref } from "vue";
 
-function moveProductRight() {
-  if (num1.value <= numberOfProducts.value + 2) {
-    num1.value -= 1;
-    products.value[0].class = class1.value;
-    products.value[1].class = class2.value;
-    activeProduct.value = products.value[2].name;
-    if (num1.value > 0) {
-      const firstElement = num1.value;
-      for (let i = 0; i < 3; i++) {
-        const element = products.value[i];
-        if (firstElement === numberOfProducts.value + 1) {
-          products.value[1].class = class1.value;
-          products.value[2].class = class2.value;
-          activeProduct.value = products.value[2].name;
-          break;
-        }
-        element.key = firstElement + i;
-        element.name = `/${firstElement + i}.png`;
-      }
-      num1.value += 2;
-    }
-  }
-}
-function moveProductLeft() {
-  if (num1.value - 3 >= 0) {
-    num1.value -= 3;
-    products.value[2].class = class1.value;
-    products.value[1].class = class2.value;
-    activeProduct.value = products.value[0].name;
-    const firstElement = num1.value;
-    for (let i = 0; i < 3; i++) {
-      const element = products.value[i];
-      if (firstElement === 0) {
-        products.value[0].class = class2.value;
-        products.value[1].class = class1.value;
-        activeProduct.value = products.value[0].name;
-        break;
-      }
-      element.key = firstElement + i;
-      element.name = `/${firstElement + i}.png`;
-    }
-    num1.value += 2;
-  }
-}
+
 
 const emit = defineEmits<{
   (e: "addCart", val: string): void;
@@ -55,6 +11,14 @@ function addToCart() {
 }
 </script>
 <script lang="ts">
+export function moveProductLeft(){
+  moveLeft(num1, products, class1, class2, activeProduct)
+}
+export function moveProductRight(){
+  moveRight(num1, numberOfProducts, products, activeProduct, class1, class2)
+}
+import { ref, type Ref } from "vue";
+import { moveLeft, moveRight } from "./composables/Homeproducts"
 const numberOfProducts = ref(5);
 const num1 = ref(2);
 const class1: Ref<string> = ref(
@@ -102,11 +66,11 @@ const activeProduct: Ref<string> = ref(`/${num1.value - 1}.png`);
       </transition-group>
       <chevron-left-icon
         @click="moveProductLeft"
-        class="md:w-10 md:h-10 w-8 h-8 mt-4 md:mt-14 absolute left-10 md:left-48 lg:left-60 lg:mt-20 z-30 text-white"
+        class="md:w-10 md:h-10 w-8 h-8 mt-4 md:mt-14 absolute left-10 md:left-48 lg:left-60 lg:mt-20 z-30 text-white moveLeft"
       />
       <chevron-right-icon
         @click="moveProductRight"
-        class="md:w-10 md:h-10 w-8 h-8 mt-4 md:mt-14 absolute left-20 ml-24 md:left-44 md:ml-80 lg:left-52 z-30 lg:mt-20 lg:ml-96 text-white"
+        class="md:w-10 md:h-10 w-8 h-8 mt-4 md:mt-14 absolute left-20 ml-24 md:left-44 md:ml-80 lg:left-52 z-30 lg:mt-20 lg:ml-96 text-white moveRight"
       />
     </div>
     <div class="flex-1 self-center mt-1 md:mt-4">

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import ConfirmSelectionView from "../views/ConfirmSelectionView.vue"
+import PurchaseViewVue from "../views/PurchaseView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,23 +11,23 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      path: "/confirmselection:/selected",
+      name: "confirmselection",
+      component: () => import("../views/ConfirmSelectionView.vue"),
+      props: true,
+    },
+    {
       path: "/purchase",
       name: "purchase",
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import("../views/PurchaseView.vue"),
+      component: PurchaseViewVue,
     },
     {
       path: "/about",
       name: "about",
       component: () => import("../views/AboutView.vue"),
-    },
-    {
-      path: "/confirmselection",
-      name: "confirmselection",
-      component: () => import("../views/ConfirmSelectionView.vue"),
-      props: (route) => ({ query: route.query.selected }),
     },
     {
       path: "/approve",
@@ -38,6 +38,11 @@ const router = createRouter({
       path: "/reviews",
       name: "reviews",
       component: () => import("../views/ReviewsView.vue"),
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "NotFound",
+      component: HomeView,
     },
   ],
 });

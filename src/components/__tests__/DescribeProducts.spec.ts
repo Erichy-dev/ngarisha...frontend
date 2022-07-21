@@ -1,31 +1,45 @@
-import { describe, expect, it, test, vi } from "vitest"
+import { afterEach, describe, expect, it, vi } from "vitest"
 import DescribeProducts from "@/components/DescribeProducts.vue"
-import { flushPromises, mount } from "@vue/test-utils"
+import { mount, RouterLinkStub } from "@vue/test-utils"
 
 describe("testing describe-products comp", () => {
-  const wrapper = mount(DescribeProducts)
+  afterEach(() => {
+    vi.resetAllMocks()
+  })
+
   it("component is truthy", () => {
     expect(DescribeProducts).toBeTruthy()
   })
-  it("tests prop as null", () => {
-    const wrapper = mount(DescribeProducts, {
-      props: {
-        selectedProduct: null
+
+  const wrapper = mount(DescribeProducts, {
+    props: {
+      selectedProduct: null,
+    },
+    global: {
+      stubs: {
+        RouterLink: RouterLinkStub
       }
-    })
-    expect(wrapper).toBeTruthy()
+    }
+  });
+
+  it("tests v-if of the cart as initially falsy", async () => {
+    expect(wrapper.find("#cart").exists()).toBeFalsy()
   })
-  it("tests prop as a string", async () => {
-    const wrapper = mount(DescribeProducts, {
-      props: {
-        selectedProduct: ""
-      }
-    })
-    expect(wrapper).toBeTruthy()
+
+  it("tests selected product renders the cart visibility as truthy", async () => {
+    await wrapper.setProps({ selectedProduct: "/1.png" });
+
+    expect(wrapper.find("#cart").exists()).toBeTruthy();
+    expect(wrapper.get("#cart").text()).toContain("SELECTED 1")
   })
-  it("tests cartProduct", async () => {
-    await wrapper.setData({ showCart: true })
-    flushPromises()
-    console.log(wrapper.text())
+
+  it("tests new selected product causes increase in numberOfProducts", async () => {
+    await wrapper.setProps({ selectedProduct: "/2.png" });
+    expect(wrapper.get("#cart").text()).toContain("SELECTED 2")
+  })
+
+  it("tests for duplicate product is stored", async () => {
+    await wrapper.setProps({ selectedProduct: "/2.png" });
+    expect(wrapper.get("#cart").text()).toContain("SELECTED 2")
   })
 })

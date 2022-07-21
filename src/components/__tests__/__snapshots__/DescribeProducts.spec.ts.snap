@@ -1,3 +1,0 @@
-// Vitest Snapshot v1
-
-exports[`testing describe-products comp > tests prop as a number 1`] = `"expected is not a function"`;
