@@ -38,10 +38,7 @@ export default {
      * sends the confirmed customer's selection of products to the database
      */
     sendSelectedProducts() {
-      axios.post(
-        `${import.meta.env.PORT}/8000/confirmSelection`,
-        this.cartSelectedProducts
-      );
+      axios.post(`/confirmSelection`, this.cartSelectedProducts);
       this.showConfirm = false;
     },
   },
@@ -56,7 +53,7 @@ export default {
     );
     const fetcher = async () => {
       await axios
-        .get(`${import.meta.env.PORT}/prices/${queryParams}`)
+        .get(`/prices/${queryParams}`)
         .then((res) => (this.productPrice = res.data));
       // this.productPrice.forEach((element: string) => {
       //   this.totalPrice += Number((element as string).substring(4));
@@ -100,7 +97,7 @@ export default {
               </div>
             </transition-group>
           </div>
-          <div class="flex flex-col space-y-16 mt-8">
+          <div class="flex flex-col space-y-14 mt-8">
             <transition-group name="selected">
               <div v-for="price in productPrice" :key="price">
                 <button class="text-xl font-bold">{{ price }}</button>
@@ -147,7 +144,7 @@ export default {
 
 .confirm-enter-active,
 .confirm-leave-active {
-  transition: all 2s ease-in-out
+  transition: all 2s ease-in-out;
 }
 .confirm-enter-from,
 .confirm-leave-to {

@@ -40,7 +40,7 @@ export default {
      * send data to the database and open a thank you page
      */
     submit() {
-      axios.post(`${import.meta.env.PORT}/deliveryForm`, this.formValues);
+      axios.post(`/deliveryForm`, this.formValues);
       this.$router.push("/thankYou");
     },
   },

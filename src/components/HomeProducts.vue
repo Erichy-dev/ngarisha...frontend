@@ -12,7 +12,7 @@ const serverProducts: Ref<
   { name: string; price: string; product: string }[] | null
 > = ref(null);
 try {
-  axios.get(`${import.meta.env.PORT}/products`).then((res) => {
+  axios.get(`/products`).then((res) => {
     serverProducts.value = res.data;
   });
 } catch (error) {

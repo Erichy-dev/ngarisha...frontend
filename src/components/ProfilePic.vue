@@ -3,9 +3,7 @@ import axios, { type AxiosResponse } from "axios";
 import { ref, type Ref } from "vue";
 const profilePic: Ref<string> = ref("");
 try {
-  axios
-    .get(`${import.meta.env.PORT}/profile`)
-    .then((res: AxiosResponse<string>) => {
+  axios.get(`/profile`).then((res: AxiosResponse<string>) => {
       profilePic.value = res.data;
     });
 } catch (error) {
