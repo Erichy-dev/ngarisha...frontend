@@ -4,9 +4,7 @@ import NavBarVue from "./components/NavBar.vue";
 </script>
 
 <template>
-  <main
-    class="flex flex-col min-h-screen leading-relaxed tracking-wide bg-pink-200 bg-cover"
-  >
+  <main class="flex flex-col min-h-screen bg-cyan-200 bg-cover">
     <NavBarVue />
     <RouterView />
     <BodyFooterVue />

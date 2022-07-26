@@ -4,16 +4,17 @@ import ProfilePicVue from "./ProfilePic.vue";
 </script>
 
 <template>
-  <main class="flex flex-col flex-1 h-1/4">
-    <profile-pic-vue />
+  <main class="flex flex-row">
+    <profile-pic-vue class="hidden sm:block mt-6" />
     <h1
-      class="text-purple-900 self-center ml-20 lg:ml-0 mt-2 md:mt-14 border-b border-white pb-4"
+      class="text-purple-900 self-center w-4/6 border-b border-white pb-4 ml-10"
     >
       <router-link
         to="/"
-        class="font-serif font-extrabold md:text-3xl hover:animate-pulse"
+        class="font-serif font-extrabold sm:text-xl md:text-2xl lg:text-3xl hover:animate-pulse text-inherit"
         >NGARISHA DETERGENTS COMPANY</router-link
       >
     </h1>
+
   </main>
 </template>

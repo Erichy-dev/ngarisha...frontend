@@ -18,7 +18,7 @@ const selectedProduct: Ref<string | null> = ref(null);
 
 <!-- blue, purple & white -->
 <template>
-  <main class="flex-1 flex flex-col">
+  <main class="flex-1 flex flex-col mt-8 md:mt-0">
     <describe-products-vue :selected-product="selectedProduct" />
     <home-products-vue @add-cart="addCart" />
   </main>

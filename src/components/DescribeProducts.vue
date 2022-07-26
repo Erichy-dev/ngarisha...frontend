@@ -29,25 +29,24 @@ const showCart: Ref<boolean> = ref(false);
 </script>
 
 <template>
-  <main class="mt-6 md:mt-0 ml-4 md:ml-60 flex md:flex-row flex-col">
-    <ul class="md:mr-36 lg:pl-20">
-      <li class="font-bold text-blue-600">
-        <span class="text-cyan-900 font-bold">Cheap.</span> ksh. 30 less than
-        erial, omo or any other liquid detergent of same quantity.
-      </li>
-      <li class="font-bold text-blue-600">
-        <span class="text-cyan-900 font-bold">Long-lasting.</span> Lasts 8 days
-        more than OMO, sunlight or any other detergent of same quantity.
-      </li>
-      <li class="font-bold text-blue-600">
-        <span class="text-cyan-900 font-bold">Effecient.</span> Works
-        magnificent in hard stains. More effective than JIK.
-      </li>
-      <li class="font-bold text-green-600">
-        Test it out. Don't forget to leave a review.
-      </li>
-    </ul>
-    <transition name="cart" :duration="2000">
+  <main class="flex md:flex-row flex-col flex-1">
+    <div class="w-10/12 flex flex-col">
+      <p class="font-bold text-lg text-sky-600 w-6/12 self-center">
+        We pride ourselves in production of
+        <span class="font-extrabold text-green-600">high quality</span> products
+        at a <span class="font-extrabold text-green-600">comrade price</span>.
+        Our products have been thoroghly
+        <span class="font-extrabold text-green-600">tested</span> to
+        satisfaction. Moreover, we've received infinite
+        <router-link
+          to="/reviews"
+          class="underline font-extrabold text-green-600"
+          >positive feedback
+        </router-link>
+        from our clients. Do not miss out on these exquisites.
+      </p>
+    </div>
+    <transition name="cart">
       <div class="flex flex-col" v-if="showCart" id="cart">
         <router-link
           :to="{
@@ -58,13 +57,16 @@ const showCart: Ref<boolean> = ref(false);
             class="flex-1 text-white w-20 h-14 md:w-24 md:h-20 mr-10 mt-1 md:mt-4 lg:ml-6 transition ease-in-out delay-75 hover:-translate-y-2 hover:scale-110 duration-1000 hover:drop-shadow-lg hover:shadow-red-900"
         /></router-link>
         <div class="flex-1 inner">
-          <button class="ml-4 lg:ml-10 transition hover:animate-pulse">
+          <button
+            id="selectedNumber"
+            class="ml-4 lg:ml-10 transition hover:animate-pulse"
+          >
             <router-link
               :to="{
                 name: 'confirmselection',
                 query: { selected: cartSelectedProducts },
               }"
-              class="italic font-bold font-mono hover:text-red-900"
+              class="italic font-bold font-mono hover:text-cyan-900"
               >SELECTED {{ customer_detergents }}</router-link
             >
           </button>

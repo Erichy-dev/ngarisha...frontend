@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { onMounted, reactive } from "vue";
+import { onMounted } from "vue";
+import axios from "axios";
 
 onMounted(() => {
   window.addEventListener("beforeunload", fnl);
@@ -10,58 +11,54 @@ function fnl(event: Event) {
   else window.removeEventListener("beforeunload", fnl);
 }
 
-import.meta.hot?.on("beforeFullReload", () => {
-  console.log("crazy");
-});
-
 const emits = defineEmits<{
   (
     e: "submit",
     val: {
       name: string;
-      delivery: string;
-      student: boolean;
-      deliverPoint: string;
+      deliveryTime: string;
+      MKUStudent: boolean;
+      deliveryPoint: string;
     }
   ): void;
 }>();
-function submit() {
-  emits("submit", formValues);
-}
-
-const formValues = reactive({
-  name: "",
-  delivery: "9:00",
-  student: true,
-  deliverPoint: "Alumni Plaza",
-});
 </script>
 <script lang="ts">
 export default {
   data() {
-    return {};
+    return {
+      formValues: {
+        name: "",
+        deliveryTime: "09:00",
+        MKUStudent: true,
+        deliveryPoint: "Alumni Plaza",
+      },
+    };
   },
-  beforeCreate() {
-    this.$router.beforeResolve(() => {
-      console.log("hi");
-    });
-    // console.log(me);
+  methods: {
+    /**
+     * send data to the database and open a thank you page
+     */
+    submit() {
+      axios.post("http://localhost:8000/deliveryForm", this.formValues);
+      this.$router.push("/thankYou");
+    },
   },
 };
 </script>
 
 <template>
-  <main class="flex flex-col flex-1" ref="puchaseRef">
+  <main class="flex flex-col flex-1 purchaseRef">
     <h1 class="self-center font-bold md:text-3xl text-cyan-800">
       Delivery Form
     </h1>
     <form
-      @submit="submit"
-      class="flex flex-col w-44 h-56 md:w-56 md:h-80 self-center border text-violet-800 bg-purple-300 font-bold italic font-serif"
+      @submit.prevent="submit"
+      class="flex flex-col w-3/6 self-center border bg-sky-300 font-bold italic font-serif"
     >
       <label for="customerName" class="self-center">Name</label>
       <input
-        class="flex-1 self-center w-3/4 nameInput"
+        class="flex-1 self-center w-5/6 nameInput"
         id="customerName"
         v-model="formValues.name"
         type="text"
@@ -71,19 +68,19 @@ export default {
         >Select time for delivery</label
       >
       <input
-        class="flex-1 self-center"
+        class="flex-1 self-center w-5/6"
         id="deliveryTime"
-        v-model="formValues.delivery"
+        v-model="formValues.deliveryTime"
         type="time"
         min="09:00"
         max="18:00"
       />
       <label for="location" class="self-center">Are you an MKU student?</label>
-      <div class="self-center flex-1 flex flex-row" id="location">
+      <div class="self-center flex-1 flex flex-col sm:flex-row" id="location">
         <label for="student" class="self-center">yes</label>
         <input
           class="flex-1 self-center mx-2"
-          v-model="formValues.student"
+          v-model="formValues.MKUStudent"
           id="student"
           name="mku"
           type="radio"
@@ -92,7 +89,7 @@ export default {
         <label for="notStudent" class="self-center">no</label>
         <input
           class="flex-1 self-center mx-2"
-          v-model="formValues.student"
+          v-model="formValues.MKUStudent"
           id="notStudent"
           name="mku"
           type="radio"
@@ -104,9 +101,9 @@ export default {
       >
       <select
         name="deliveryVenue"
-        v-model="formValues.deliverPoint"
+        v-model="formValues.deliveryPoint"
         id="deliveryVenue"
-        class="self-center"
+        class="self-center w-5/6"
       >
         <option value="AlumniPlaza">Alumnini Plaza</option>
         <option value="Library">Library</option>
