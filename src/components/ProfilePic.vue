@@ -4,7 +4,7 @@ import { ref, type Ref } from "vue";
 const profilePic: Ref<string> = ref("");
 try {
   axios
-    .get("http://localhost:8000/profile")
+    .get(`${import.meta.env.PORT}/profile`)
     .then((res: AxiosResponse<string>) => {
       profilePic.value = res.data;
     });

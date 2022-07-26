@@ -39,7 +39,7 @@ export default {
      */
     sendSelectedProducts() {
       axios.post(
-        "http://localhost:8000/confirmSelection",
+        `${import.meta.env.PORT}/8000/confirmSelection`,
         this.cartSelectedProducts
       );
       this.showConfirm = false;
@@ -56,7 +56,7 @@ export default {
     );
     const fetcher = async () => {
       await axios
-        .get(`http://localhost:8000/prices/${queryParams}`)
+        .get(`${import.meta.env.PORT}/prices/${queryParams}`)
         .then((res) => (this.productPrice = res.data));
       // this.productPrice.forEach((element: string) => {
       //   this.totalPrice += Number((element as string).substring(4));
