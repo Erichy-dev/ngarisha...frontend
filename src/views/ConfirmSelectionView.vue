@@ -1,67 +1,63 @@
-<script lang="ts" setup></script>
-<script lang="ts">
-//shifted to options API to maximise on vue-router. composition API doesn't fully support vue-router.
-import type { LocationQueryValue } from "vue-router";
+<script lang="ts" setup>
+import { ref, type Ref } from "vue";
+import type { ProductSchema } from "@/components/composables/schemas/schema";
+import { useRouter } from "vue-router";
 import axios from "axios";
 
-export default {
-  data() {
-    return {
-      cartSelectedProducts: this.$route.query.selected,
-      confirmSelect: true,
-      productPrice: [],
-      showConfirm: true,
-    };
-  },
-  methods: {
-    /**
-     * sends the user to the delivery form
-     */
-    toPurchase() {
-      this.$router.push({ path: "/purchase" });
-    },
-    /**
-     * allows the user to deselect a product
-     */
-    undoProduct(event: Event) {
-      const productId: string = (event.target as HTMLElement).id;
-      const productIndex: number | undefined = (
-        this.cartSelectedProducts as LocationQueryValue[]
-      ).indexOf(productId);
-      (this.cartSelectedProducts as LocationQueryValue[])?.splice(
-        productIndex as number,
-        1
-      );
-      (this.productPrice as string[]).splice(productIndex as number, 1);
-    },
-    /**
-     * sends the confirmed customer's selection of products to the database
-     */
-    sendSelectedProducts() {
-      axios.post(`/confirmSelection`, this.cartSelectedProducts);
-      this.showConfirm = false;
-    },
-  },
-  created() {
-    if (typeof this.cartSelectedProducts === typeof "") {
-      this.cartSelectedProducts = [
-        this.cartSelectedProducts as LocationQueryValue,
-      ];
-    }
-    const queryParams = (this.cartSelectedProducts as LocationQueryValue[]).map(
-      (el) => (el as string).replace("/", "%2F")
-    );
-    const fetcher = async () => {
-      await axios
-        .get(`/prices/${queryParams}`)
-        .then((res) => (this.productPrice = res.data));
-      // this.productPrice.forEach((element: string) => {
-      //   this.totalPrice += Number((element as string).substring(4));
-      // });
-    };
-    fetcher();
-  },
+type SendId = ProductSchema & {
+  id: number;
 };
+const cartSelectedProducts: Ref<SendId[] | null> = ref(null);
+const envURL = "https://devriki.pythonanywhere.com/";
+function fetcher() {
+  /**
+   * if this becomes a problem just use window...
+   */
+  const uri: string = window.location.href;
+  const queryStartPoint = uri.indexOf("?");
+  const query: string = uri.substring(queryStartPoint);
+  axios({
+    method: "get",
+    url: envURL + `selectedProducts/${query}`,
+  })
+    .then((res) => {
+      cartSelectedProducts.value = res.data;
+      if (cartSelectedProducts.value) {
+        for (let i = 0; i < cartSelectedProducts.value.length; i++) {
+          const elem = cartSelectedProducts.value[i];
+          elem.id = i;
+        }
+      }
+    })
+    .catch((error) => console.log(error));
+}
+fetcher();
+
+/**
+ * Deselects a selected product
+ */
+function undoProduct(event: Event) {
+  const productId = Number((event.target as HTMLElement).id);
+  cartSelectedProducts.value?.splice(productId, 1);
+}
+
+const showConfirm = ref(true);
+/**
+ * use useRouter() directly inside setup otherwise inject won't work
+ */
+const pusher = useRouter();
+function sendSelectedProducts() {
+  showConfirm.value = false;
+  axios({
+    method: "post",
+    url: envURL + "confirmSelection/",
+    data: JSON.stringify(cartSelectedProducts.value),
+  })
+    .then(() => {
+      pusher.push("/productsConfirmed");
+    })
+    .catch((err) => console.log(err));
+}
 </script>
 
 <template>
@@ -73,34 +69,34 @@ export default {
       <h2 class="font-bold">
         Confirm your selections then fill the delivery form.
       </h2>
-      <div class="flex flex-col" v-if="confirmSelect">
+      <div class="flex flex-col" v-if="cartSelectedProducts">
         <div class="flex flex-row">
           <div class="flex flex-col">
             <transition-group name="selected">
               <div
                 v-for="product of cartSelectedProducts"
-                :key="String(product)"
+                :key="product.fields.name"
                 class="flex-1 m-1 flex flex-row"
               >
                 <img
                   class="rounded-md w-10 h-10 md:w-20 md:h-18 lg:w-24 lg:h-20"
-                  :src="String(product)"
+                  :src="product.fields.get_image_str"
                   alt="detergents at their best"
                 />
+                <div>
+                  <button
+                    class="font-bold text-black hover:text-cyan-900 hover:animate-pulse font-serif bg-slate-200 rounded-md p-1 ml-1 md:mt-2"
+                  >
+                    {{ product.fields.price }}
+                  </button>
+                </div>
                 <button
                   @click="undoProduct($event)"
-                  :id="String(product)"
-                  class="font-bold text-purple-600 hover:text-cyan-900 hover:animate-pulse font-serif bg-slate-200 rounded-md p-1 m-1 md:m-4 undoButton"
+                  :id="String(product.id)"
+                  class="font-bold text-purple-600 hover:text-cyan-900 hover:animate-pulse font-serif bg-slate-200 rounded-md p-1 m-1 md:m-4 md:mt-1.5 undoButton"
                 >
                   UNDO
                 </button>
-              </div>
-            </transition-group>
-          </div>
-          <div class="flex flex-col space-y-14 mt-8">
-            <transition-group name="selected">
-              <div v-for="price in productPrice" :key="price">
-                <button class="text-xl font-bold">{{ price }}</button>
               </div>
             </transition-group>
           </div>
@@ -115,18 +111,12 @@ export default {
               CONFIRM<!--talk to db-->
             </button>
           </transition>
-          <button
-            @click="toPurchase"
-            id="deliveryButton"
-            class="bg-purple-500 rounded-full p-1 font-bold hover:text-red-900 hover:animate-pulse font-serif text-sm md:text-xl deliveryPush"
-          >
-            DELIVERY FORM
-          </button>
         </div>
       </div>
     </section>
   </main>
 </template>
+
 <style scoped>
 .selected-move,
 .selected-enter-active,

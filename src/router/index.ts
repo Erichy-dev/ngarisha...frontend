@@ -1,3 +1,4 @@
+import ConfirmSelectionViewVue from "@/views/ConfirmSelectionView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import PurchaseViewVue from "../views/PurchaseView.vue";
@@ -13,9 +14,14 @@ const router = createRouter({
     {
       path: "/confirmselection:/selected",
       name: "confirmselection",
-      component: () => import("../views/ConfirmSelectionView.vue"),
-      props: true,
+      component: ConfirmSelectionViewVue,
     },
+    {
+      path: "/about",
+      name: "about",
+      component: () => import("../views/AboutView.vue"),
+    },
+    { path: "/productsConfirmed", redirect: "/purchase" },
     {
       path: "/purchase",
       name: "purchase",
@@ -23,11 +29,6 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: PurchaseViewVue,
-    },
-    {
-      path: "/about",
-      name: "about",
-      component: () => import("../views/AboutView.vue"),
     },
     {
       path: "/approve",

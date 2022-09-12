@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { ShoppingCartIcon } from "@heroicons/vue/solid";
-import type { Ref } from "vue";
+import { ref, watchEffect, toRef, onMounted, type Ref } from "vue";
 import { RouterLink } from "vue-router";
+const showCart: Ref<boolean> = ref(false);
 
-// useRouter().
 const customer_detergents: Ref<number> = ref(0);
 const props = defineProps<{
   selectedProduct: string | null;
@@ -22,16 +22,20 @@ watchEffect(() => {
   if (customer_detergents.value > 0) showCart.value = true;
   else showCart.value = false;
 });
-</script>
-<script lang="ts">
-import { ref, watchEffect, toRef } from "vue";
-const showCart: Ref<boolean> = ref(false);
+
+/**
+ * makes sure the target element is mounted before telporting.
+ */
+const teleportMe = ref(false);
+onMounted(() => {
+  teleportMe.value = true;
+});
 </script>
 
 <template>
   <main class="flex md:flex-row flex-col flex-1">
     <div class="w-10/12 flex flex-col">
-      <p class="font-bold text-lg text-sky-600 w-6/12 self-center">
+      <p class="font-bold text-lg text-blue-900 w-10/12 self-center">
         We pride ourselves in production of
         <span class="font-extrabold text-green-600">high quality</span> products
         at a <span class="font-extrabold text-green-600">comrade price</span>.
@@ -46,33 +50,22 @@ const showCart: Ref<boolean> = ref(false);
         from our clients. Do not miss out on these exquisites.
       </p>
     </div>
-    <transition name="cart">
-      <div class="flex flex-col" v-if="showCart" id="cart">
-        <router-link
-          :to="{
-            name: 'confirmselection',
-            query: { selected: cartSelectedProducts },
-          }"
-          ><shopping-cart-icon
-            class="flex-1 text-white w-20 h-14 md:w-24 md:h-20 mr-10 mt-1 md:mt-4 lg:ml-6 transition ease-in-out delay-75 hover:-translate-y-2 hover:scale-110 duration-1000 hover:drop-shadow-lg hover:shadow-red-900"
-        /></router-link>
-        <div class="flex-1 inner">
-          <button
-            id="selectedNumber"
-            class="ml-4 lg:ml-10 transition hover:animate-pulse"
-          >
+    <div v-if="teleportMe">
+      <teleport to="#sellProducts">
+        <transition name="cart">
+          <div class="flex flex-col self-center" v-if="showCart" id="cart">
             <router-link
               :to="{
                 name: 'confirmselection',
                 query: { selected: cartSelectedProducts },
               }"
-              class="italic font-bold font-mono hover:text-cyan-900"
-              >SELECTED {{ customer_detergents }}</router-link
-            >
-          </button>
-        </div>
-      </div>
-    </transition>
+              ><shopping-cart-icon
+                class="flex-1 text-blue-900 w-6/12 transition ease-in-out delay-75 hover:-translate-y-2 hover:scale-110 duration-1000 hover:drop-shadow-lg hover:shadow-red-900"
+            /></router-link>
+          </div>
+        </transition>
+      </teleport>
+    </div>
   </main>
 </template>
 <style>

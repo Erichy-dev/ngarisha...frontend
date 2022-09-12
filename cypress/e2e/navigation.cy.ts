@@ -10,8 +10,8 @@ context("navigation", () => {
     // checks url path contains the specific pathname
     cy.location("pathname").should("include", "purchase");
 
-    cy.go("back")
-    cy.location("pathname").should("include", "confirm")
+    cy.go("back");
+    cy.location("pathname").should("include", "confirm");
   });
 
   it("reloads page", () => {
@@ -32,9 +32,9 @@ context("navigation", () => {
         expect(typeof contentWindow === "object").to.be.true;
       },
     });
-  })
+  });
 
   it("visits wrong page", () => {
     cy.visit("/notFound");
-  })
+  });
 });

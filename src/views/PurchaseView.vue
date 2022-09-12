@@ -7,21 +7,12 @@ onMounted(() => {
 });
 function fnl(event: Event) {
   const view = document.baseURI.includes("purchase");
-  if (view) event.preventDefault();
-  else window.removeEventListener("beforeunload", fnl);
+  console.log(view);
+  if (view) {
+    event.preventDefault();
+    console.log("purchaser nope");
+  } else window.removeEventListener("beforeunload", fnl);
 }
-
-const emits = defineEmits<{
-  (
-    e: "submit",
-    val: {
-      name: string;
-      deliveryTime: string;
-      MKUStudent: boolean;
-      deliveryPoint: string;
-    }
-  ): void;
-}>();
 </script>
 <script lang="ts">
 export default {
@@ -40,7 +31,7 @@ export default {
      * send data to the database and open a thank you page
      */
     submit() {
-      axios.post(`/deliveryForm`, this.formValues);
+      // axios.post(`/deliveryForm`, this.formValues);
       this.$router.push("/thankYou");
     },
   },

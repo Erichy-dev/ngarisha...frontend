@@ -11,13 +11,13 @@ import { ChatIcon, MailIcon } from "@heroicons/vue/solid";
       /></a>
       <a class="flex-1" href="https://twitter.com/riki_dev_" target="_blank">
         <img
-          src="/twitter.png"
+          src="/media/icons/twitter.png"
           class="h-2/5 w-1/5 text-sky-400transition ease-in-out delay-75 hover:-translate-y-2 hover:scale-110 duration-1000 hover:drop-shadow-lg hover:shadow-black"
         />
       </a>
       <a class="flex-1" href="https://wa.me/+254795829177" target="_blank">
         <img
-          src="/whatsapp.png"
+          src="/media/icons/whatsapp.png"
           class="h-3/6 w-2/6 text-sky-400transition ease-in-out delay-75 hover:-translate-y-2 hover:scale-110 duration-1000 hover:drop-shadow-lg hover:shadow-black"
         />
       </a>
@@ -27,8 +27,9 @@ import { ChatIcon, MailIcon } from "@heroicons/vue/solid";
         />
       </a>
     </main>
-    <p class="self-center hover:animate-pulse md:font-extrabold">
-      @Copyright 2022. Set up by <a href="#" class="md:font-extrabold">@riki</a>
+    <p class="self-center hover:animate-pulse font-bold">
+      @Copyright 2022. Set up by
+      <a href="mailto:erichnyaga1@gmail.com" class="font-extrabold">@riki</a>
     </p>
   </main>
 </template>

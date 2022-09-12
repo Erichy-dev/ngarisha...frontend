@@ -1,13 +1,19 @@
 <script lang="ts" setup>
-import axios, { type AxiosResponse } from "axios";
+import axios from "axios";
 import { ref, type Ref } from "vue";
-const profilePic: Ref<string> = ref("");
+import type { ProfileSchema } from "../components/composables/schemas/schema";
+
+const envURL = "https://devriki.pythonanywhere.com/";
+const profilePic: Ref<ProfileSchema | null> = ref(null);
 try {
-  axios.get(`/profile`).then((res: AxiosResponse<string>) => {
-      profilePic.value = res.data;
-    });
+  axios({
+    method: "get",
+    url: envURL + "profile/",
+  }).then((res) => {
+    profilePic.value = res.data[0].fields;
+  });
 } catch (error) {
-  //
+  console.log(error);
 }
 </script>
 
@@ -16,8 +22,9 @@ try {
     <div>
       <transition name="profile" appear>
         <img
-          class="rounded-lg hover:animate-pulse hidden sm:block"
-          :src="profilePic"
+          class="hover:animate-pulse rounded-full hidden sm:block"
+          v-if="profilePic"
+          :src="profilePic.get_image_str"
           alt="my-pic"
         />
       </transition>
@@ -26,7 +33,7 @@ try {
       <button class="transition hover:animate-pulse z-30 ml-5">
         <router-link
           to="/about"
-          class="md:text-base font-bold font-mono hover:text-cyan-900"
+          class="font-bold font-serif text-black hover:text-cyan-900"
           >ABOUT US</router-link
         >
       </button>
