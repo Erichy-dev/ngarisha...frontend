@@ -1,3 +1,6 @@
+# Contributions
+Used TailwindCSS so be careful using class attributes may produce unsought results
+
 # frontend
 
 This template should help get you started developing with Vue 3 in Vite.
