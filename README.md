@@ -1,5 +1,6 @@
 # Contributions
-Used TailwindCSS so be careful using class attributes may produce unsought results
+Used TailwindCSS so be careful using class attributes may produce unsought results.
+Scroll down to the project setup to run the project on local dev.
 
 # frontend
 
